@@ -1,7 +1,10 @@
-﻿namespace BlazorScrumAPI.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BlazorScrumAPI.Models
 {
 	public class Task
 	{
+		[Key]
 		public int Id { get; set; }
 		public string Title { get; set; }
 		public string Description { get; set; }

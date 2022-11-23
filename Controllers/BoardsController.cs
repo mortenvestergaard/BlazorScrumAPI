@@ -22,14 +22,14 @@ namespace BlazorScrumAPI.Controllers
         }
 
         // GET: api/Boards
-        [HttpGet]
+        [HttpGet("GetBoards")]
         public async Task<ActionResult<IEnumerable<Board>>> GetBoards()
         {
             return await _context.Boards.ToListAsync();
         }
 
         // GET: api/Boards/5
-        [HttpGet("{id}")]
+        [HttpGet("GetBoard")]
         public async Task<ActionResult<Board>> GetBoard(int id)
         {
             var board = await _context.Boards.FindAsync(id);
@@ -44,7 +44,7 @@ namespace BlazorScrumAPI.Controllers
 
         // PUT: api/Boards/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut("CreateBoard")]
         public async Task<IActionResult> PutBoard(int id, Board board)
         {
             if (id != board.Id)
