@@ -15,9 +15,5 @@ namespace BlazorScrumAPI.Data
 		public DbSet<User> Users { get; set; }
 		public DbSet<State> States { get; set; }
 
-		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-		{
-			optionsBuilder.UseSqlServer(@"Server=(localdb)\\mssqllocaldb;Database=BlazorScrumAPI.Data;Trusted_Connection=True;MultipleActiveResultSets=true");
-		}
 	}
 }
