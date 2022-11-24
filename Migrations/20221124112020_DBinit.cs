@@ -4,7 +4,7 @@
 
 namespace BlazorScrumAPI.Migrations
 {
-    public partial class DBInit : Migration
+    public partial class DBinit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -27,7 +27,7 @@ namespace BlazorScrumAPI.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<int>(type: "int", nullable: false)
+                    StateId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -62,8 +62,8 @@ namespace BlazorScrumAPI.Migrations
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StateId = table.Column<int>(type: "int", nullable: false),
-                    AssignedToId = table.Column<int>(type: "int", nullable: false),
-                    ReporterId = table.Column<int>(type: "int", nullable: false),
+                    AssignedToId = table.Column<int>(type: "int", nullable: true),
+                    ReporterId = table.Column<int>(type: "int", nullable: true),
                     BoardId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -84,15 +84,23 @@ namespace BlazorScrumAPI.Migrations
                         name: "FK_Tasks_Users_AssignedToId",
                         column: x => x.AssignedToId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Tasks_Users_ReporterId",
                         column: x => x.ReporterId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "BoardId", "Username" },
+                values: new object[] { 1, null, "Alex Lackovic" });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "BoardId", "Username" },
+                values: new object[] { 2, null, "Benjamin Roesdal" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tasks_AssignedToId",

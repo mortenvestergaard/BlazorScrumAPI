@@ -47,7 +47,7 @@ namespace BlazorScrumAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("Name")
+                    b.Property<int>("StateId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -63,7 +63,7 @@ namespace BlazorScrumAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("AssignedToId")
+                    b.Property<int?>("AssignedToId")
                         .HasColumnType("int");
 
                     b.Property<int?>("BoardId")
@@ -73,7 +73,7 @@ namespace BlazorScrumAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ReporterId")
+                    b.Property<int?>("ReporterId")
                         .HasColumnType("int");
 
                     b.Property<int>("StateId")
@@ -116,25 +116,33 @@ namespace BlazorScrumAPI.Migrations
                     b.HasIndex("BoardId");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Username = "Alex Lackovic"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Username = "Benjamin Roesdal"
+                        });
                 });
 
             modelBuilder.Entity("BlazorScrumAPI.Models.Task", b =>
                 {
                     b.HasOne("BlazorScrumAPI.Models.User", "AssignedTo")
                         .WithMany()
-                        .HasForeignKey("AssignedToId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AssignedToId");
 
                     b.HasOne("BlazorScrumAPI.Models.Board", null)
-                        .WithMany("MyProperty")
+                        .WithMany("Tasks")
                         .HasForeignKey("BoardId");
 
                     b.HasOne("BlazorScrumAPI.Models.User", "Reporter")
                         .WithMany()
-                        .HasForeignKey("ReporterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ReporterId");
 
                     b.HasOne("BlazorScrumAPI.Models.State", "State")
                         .WithMany()
@@ -160,7 +168,7 @@ namespace BlazorScrumAPI.Migrations
                 {
                     b.Navigation("Collaborators");
 
-                    b.Navigation("MyProperty");
+                    b.Navigation("Tasks");
                 });
 #pragma warning restore 612, 618
         }
