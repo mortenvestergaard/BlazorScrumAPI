@@ -29,7 +29,7 @@ namespace BlazorScrumAPI.Controllers
         }
 
         // GET: api/Tasks/5
-        [HttpGet("{id}")]
+        [HttpGet("GetTask")]
         public async Task<ActionResult<Models.Task>> GetTask(int id)
         {
             var task = await _context.Tasks.FindAsync(id);
@@ -45,9 +45,9 @@ namespace BlazorScrumAPI.Controllers
         // PUT: api/Tasks/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTask(int id, Models.Task task)
+        public async Task<IActionResult> PutTask(Models.Task task)
         {
-            if (id != task.Id)
+            if (task == null)
             {
                 return BadRequest();
             }
@@ -60,7 +60,7 @@ namespace BlazorScrumAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!TaskExists(id))
+                if (!TaskExists(task.Id))
                 {
                     return NotFound();
                 }
@@ -75,7 +75,7 @@ namespace BlazorScrumAPI.Controllers
 
         // POST: api/Tasks
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        [HttpPost("PostTask")]
         public async Task<ActionResult<Models.Task>> PostTask(Models.Task task)
         {
             _context.Tasks.Add(task);
