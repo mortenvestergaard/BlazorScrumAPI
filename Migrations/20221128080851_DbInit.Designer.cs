@@ -3,6 +3,7 @@ using BlazorScrumAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazorScrumAPI.Migrations
 {
     [DbContext(typeof(ScrumBoardContext))]
-    partial class ScrumBoardContextModelSnapshot : ModelSnapshot
+    [Migration("20221128080851_DbInit")]
+    partial class DbInit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,23 +58,6 @@ namespace BlazorScrumAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("States");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "To Do"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "In Progress"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Done"
-                        });
                 });
 
             modelBuilder.Entity("BlazorScrumAPI.Models.Task", b =>

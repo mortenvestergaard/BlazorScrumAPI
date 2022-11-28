@@ -30,6 +30,36 @@ namespace BlazorScrumAPI.Data
 					Username = "Benjamin Roesdal"
 				}
 				);
+
+			modelBuilder.Entity<State>().HasData(
+				new State
+				{
+					Id = 1,
+					Name = "To Do"
+				},
+				new State
+				{
+					Id = 2,
+					Name = "In Progress"
+				},
+				new State
+				{
+					Id = 3,
+					Name = "Done"
+				}
+				);
+
+			modelBuilder.Entity<Models.Task>()
+				.HasOne(x => x.Assignee)
+				.WithMany(x => x.AssigneeTasks)
+				.HasForeignKey(x => x.AssigneeID)
+				.OnDelete(DeleteBehavior.ClientSetNull);
+
+			modelBuilder.Entity<Models.Task>()
+				.HasOne(x => x.Reporter)
+				.WithMany(x => x.ReporterTasks)
+				.HasForeignKey(x => x.ReporterID)
+				.OnDelete(DeleteBehavior.ClientSetNull);
 		}
 	}
 }

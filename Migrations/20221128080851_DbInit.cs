@@ -4,7 +4,7 @@
 
 namespace BlazorScrumAPI.Migrations
 {
-    public partial class DBinit : Migration
+    public partial class DbInit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,7 +14,8 @@ namespace BlazorScrumAPI.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TaskID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -27,7 +28,7 @@ namespace BlazorScrumAPI.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    StateId = table.Column<int>(type: "int", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -40,17 +41,11 @@ namespace BlazorScrumAPI.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BoardId = table.Column<int>(type: "int", nullable: true)
+                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Users_Boards_BoardId",
-                        column: x => x.BoardId,
-                        principalTable: "Boards",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -61,71 +56,67 @@ namespace BlazorScrumAPI.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StateId = table.Column<int>(type: "int", nullable: false),
-                    AssignedToId = table.Column<int>(type: "int", nullable: true),
-                    ReporterId = table.Column<int>(type: "int", nullable: true),
-                    BoardId = table.Column<int>(type: "int", nullable: true)
+                    BoardID = table.Column<int>(type: "int", nullable: false),
+                    StateID = table.Column<int>(type: "int", nullable: false),
+                    AssigneeID = table.Column<int>(type: "int", nullable: false),
+                    ReporterID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tasks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Tasks_Boards_BoardId",
-                        column: x => x.BoardId,
+                        name: "FK_Tasks_Boards_BoardID",
+                        column: x => x.BoardID,
                         principalTable: "Boards",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Tasks_States_StateId",
-                        column: x => x.StateId,
+                        name: "FK_Tasks_States_StateID",
+                        column: x => x.StateID,
                         principalTable: "States",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Tasks_Users_AssignedToId",
-                        column: x => x.AssignedToId,
+                        name: "FK_Tasks_Users_AssigneeID",
+                        column: x => x.AssigneeID,
                         principalTable: "Users",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Tasks_Users_ReporterId",
-                        column: x => x.ReporterId,
+                        name: "FK_Tasks_Users_ReporterID",
+                        column: x => x.ReporterID,
                         principalTable: "Users",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "BoardId", "Username" },
-                values: new object[] { 1, null, "Alex Lackovic" });
+                columns: new[] { "Id", "Username" },
+                values: new object[] { 1, "Alex Lackovic" });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "BoardId", "Username" },
-                values: new object[] { 2, null, "Benjamin Roesdal" });
+                columns: new[] { "Id", "Username" },
+                values: new object[] { 2, "Benjamin Roesdal" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tasks_AssignedToId",
+                name: "IX_Tasks_AssigneeID",
                 table: "Tasks",
-                column: "AssignedToId");
+                column: "AssigneeID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tasks_BoardId",
+                name: "IX_Tasks_BoardID",
                 table: "Tasks",
-                column: "BoardId");
+                column: "BoardID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tasks_ReporterId",
+                name: "IX_Tasks_ReporterID",
                 table: "Tasks",
-                column: "ReporterId");
+                column: "ReporterID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tasks_StateId",
+                name: "IX_Tasks_StateID",
                 table: "Tasks",
-                column: "StateId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_BoardId",
-                table: "Users",
-                column: "BoardId");
+                column: "StateID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -134,13 +125,13 @@ namespace BlazorScrumAPI.Migrations
                 name: "Tasks");
 
             migrationBuilder.DropTable(
+                name: "Boards");
+
+            migrationBuilder.DropTable(
                 name: "States");
 
             migrationBuilder.DropTable(
                 name: "Users");
-
-            migrationBuilder.DropTable(
-                name: "Boards");
         }
     }
 }

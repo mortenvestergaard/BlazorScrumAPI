@@ -12,23 +12,23 @@ namespace BlazorScrumAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BoardsController : ControllerBase
+    public class BoardController : ControllerBase
     {
         private readonly ScrumBoardContext _context;
 
-        public BoardsController(ScrumBoardContext context)
+        public BoardController(ScrumBoardContext context)
         {
             _context = context;
         }
 
-        // GET: api/Boards
+
         [HttpGet("GetBoards")]
         public async Task<ActionResult<IEnumerable<Board>>> GetBoards()
         {
             return await _context.Boards.ToListAsync();
         }
 
-        // GET: api/Boards/5
+
         [HttpGet("GetBoard")]
         public async Task<ActionResult<Board>> GetBoard(int id)
         {
@@ -42,8 +42,7 @@ namespace BlazorScrumAPI.Controllers
             return board;
         }
 
-        // PUT: api/Boards/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+
         [HttpPut("CreateBoard")]
         public async Task<IActionResult> PutBoard(int id, Board board)
         {
@@ -73,8 +72,7 @@ namespace BlazorScrumAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Boards
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+
         [HttpPost]
         public async Task<ActionResult<Board>> PostBoard(Board board)
         {
@@ -84,8 +82,7 @@ namespace BlazorScrumAPI.Controllers
             return CreatedAtAction("GetBoard", new { id = board.Id }, board);
         }
 
-        // DELETE: api/Boards/5
-        [HttpDelete("{id}")]
+        [HttpDelete("DeleteBoard")]
         public async Task<IActionResult> DeleteBoard(int id)
         {
             var board = await _context.Boards.FindAsync(id);

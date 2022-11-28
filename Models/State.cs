@@ -6,6 +6,8 @@ namespace BlazorScrumAPI.Models
 	{
 		[Key]
 		public int Id { get; set; }
-		public States StateId { get; set; }
+		public string Name { get; set; }
+
+		public virtual ICollection<Task> Tasks { get; set; }
 	}
 }

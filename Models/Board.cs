@@ -8,7 +8,10 @@ namespace BlazorScrumAPI.Models
 		[Key]
 		public int Id { get; set; }
 		public string Name { get; set; }
-		public List<User>? Collaborators { get; set; }
-		public virtual List<Models.Task>? Tasks { get; set; }
+		public int TaskID { get; set; }
+		//public int UserID { get; set; }
+
+		//public ICollection<User> Collaborators { get; set; }
+		public virtual ICollection<Task> Tasks { get; set; }
 	}
 }
