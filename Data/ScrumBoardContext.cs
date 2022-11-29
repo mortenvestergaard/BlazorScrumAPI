@@ -18,6 +18,15 @@ namespace BlazorScrumAPI.Data
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
+			modelBuilder.Entity<Board>().HasData(
+				new Board
+				{
+					Id = 1,
+					Name = "BoardOne",
+					
+				}
+				);
+
 			modelBuilder.Entity<User>().HasData(
 				new User
 				{
@@ -48,6 +57,40 @@ namespace BlazorScrumAPI.Data
 					Name = "Done"
 				}
 				);
+
+			modelBuilder.Entity<Models.Task>().HasData(
+				new Models.Task
+				{
+					Id = 1,
+					Title = "Do some code",
+					Description = "Do the thing with the code",
+					BoardID = 1,
+					StateID = 1,
+					AssigneeID = 1,
+					ReporterID = 2
+				},
+
+                new Models.Task
+                {
+                    Id = 2,
+                    Title = "Check some code",
+                    Description = "Do the other thing with the code",
+                    BoardID = 1,
+                    StateID = 2,
+                    AssigneeID = 1,
+                    ReporterID = 2
+                },
+                new Models.Task
+                {
+                    Id = 3,
+                    Title = "What now",
+                    Description = "I really dont know",
+                    BoardID = 1,
+                    StateID = 3,
+                    AssigneeID = 2,
+                    ReporterID = 1
+                }
+                );
 
 			modelBuilder.Entity<Models.Task>()
 				.HasOne(x => x.Assignee)

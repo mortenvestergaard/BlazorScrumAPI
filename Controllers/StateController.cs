@@ -25,7 +25,8 @@ namespace BlazorScrumAPI.Controllers
         [HttpGet("GetStates")]
         public async Task<ActionResult<IEnumerable<State>>> GetStates()
         {
-            return await _context.States.ToListAsync();
+            var response = await _context.States.ToListAsync();
+            return response;
         }
 
         // GET: api/State/5

@@ -25,7 +25,8 @@ namespace BlazorScrumAPI.Controllers
         [HttpGet("GetTasks")]
         public async Task<ActionResult<IEnumerable<Models.Task>>> GetTasks()
         {
-            return await _context.Tasks.ToListAsync();
+            var response = await _context.Tasks.Include(e => e.State).ToListAsync();
+            return response;
         }
 
 
