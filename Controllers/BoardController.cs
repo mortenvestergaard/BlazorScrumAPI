@@ -23,14 +23,14 @@ namespace BlazorScrumAPI.Controllers
 
 
         [HttpGet("GetBoards")]
-        public async Task<ActionResult<IEnumerable<Board>>> GetBoards()
+        public async Task<ActionResult<IEnumerable<DbBoard>>> GetBoards()
         {
             return await _context.Boards.ToListAsync();
         }
 
 
         [HttpGet("GetBoard")]
-        public async Task<ActionResult<Board>> GetBoard(int id)
+        public async Task<ActionResult<DbBoard>> GetBoard(int id)
         {
             var board = await _context.Boards.FindAsync(id);
 
@@ -44,7 +44,7 @@ namespace BlazorScrumAPI.Controllers
 
 
         [HttpPut("CreateBoard")]
-        public async Task<IActionResult> PutBoard(int id, Board board)
+        public async Task<IActionResult> PutBoard(int id, DbBoard board)
         {
             if (id != board.Id)
             {
@@ -74,7 +74,7 @@ namespace BlazorScrumAPI.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<Board>> PostBoard(Board board)
+        public async Task<ActionResult<DbBoard>> PostBoard(DbBoard board)
         {
             _context.Boards.Add(board);
             await _context.SaveChangesAsync();

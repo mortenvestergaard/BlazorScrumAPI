@@ -2,13 +2,13 @@
 
 namespace BlazorScrumAPI.Models
 {
-	public class User
+	public class DbUser
 	{
 		[Key]
 		public int Id { get; set; }
 		public string Username { get; set; }
 
-		public virtual ICollection<Task> AssigneeTasks { get; set; }
-		public virtual ICollection<Task> ReporterTasks { get; set; }
+		public virtual ICollection<DbScrumTask> AssigneeTasks { get; set; }
+		public virtual ICollection<DbScrumTask> ReporterTasks { get; set; }
 	}
 }

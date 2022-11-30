@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BlazorScrumAPI.Data;
 using BlazorScrumAPI.Models;
+using BlazorScrumAPI.BusinessModels;
 
 namespace BlazorScrumAPI.Controllers
 {
@@ -23,7 +24,7 @@ namespace BlazorScrumAPI.Controllers
 
 
         [HttpGet("GetStates")]
-        public async Task<ActionResult<IEnumerable<State>>> GetStates()
+        public async Task<ActionResult<IEnumerable<DbState>>> GetStates()
         {
             var response = await _context.States.ToListAsync();
             return response;
@@ -31,7 +32,7 @@ namespace BlazorScrumAPI.Controllers
 
         // GET: api/State/5
         [HttpGet("GetState")]
-        public async Task<ActionResult<State>> GetState(int id)
+        public async Task<ActionResult<DbState>> GetState(int id)
         {
             var state = await _context.States.FindAsync(id);
 
@@ -44,42 +45,19 @@ namespace BlazorScrumAPI.Controllers
         }
 
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutState(int id, State state)
-        {
-            if (id != state.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(state).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!StateExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
         [HttpPost("CreateState")]
-        public async Task<ActionResult<State>> PostState(State state)
+        public async Task<ActionResult<DbState>> PostState(State state)
         {
-            _context.States.Add(state);
+            DbState newState = new DbState()
+            {
+                Id= state.Id,
+                Name= state.Name,
+                
+            };
+            _context.States.Add(newState);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetState", new { id = state.Id }, state);
+            return CreatedAtAction("GetState", new { id = newState.Id }, newState);
         }
 
         // DELETE: api/State/5

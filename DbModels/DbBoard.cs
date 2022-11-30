@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BlazorScrumAPI.Models
 {
-	public class Board
+	public class DbBoard
 	{
 		[Key]
 		public int Id { get; set; }
@@ -11,6 +11,6 @@ namespace BlazorScrumAPI.Models
 		//public int UserID { get; set; }
 
 		//public ICollection<User> Collaborators { get; set; }
-		public virtual ICollection<Task> Tasks { get; set; }
+		public virtual ICollection<DbScrumTask> Tasks { get; set; }
 	}
 }

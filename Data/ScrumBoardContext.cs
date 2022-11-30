@@ -11,15 +11,15 @@ namespace BlazorScrumAPI.Data
 			//DbContext.Database.GetService<IRelationalDatabaseCreator>().Exists();
 		}
 
-		public DbSet<Board> Boards { get; set; }
-		public DbSet<Models.Task> Tasks { get; set; }
-		public DbSet<User> Users { get; set; }
-		public DbSet<State> States { get; set; }
+		public DbSet<DbBoard> Boards { get; set; }
+		public DbSet<Models.DbScrumTask> Tasks { get; set; }
+		public DbSet<DbUser> Users { get; set; }
+		public DbSet<DbState> States { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			modelBuilder.Entity<Board>().HasData(
-				new Board
+			modelBuilder.Entity<DbBoard>().HasData(
+				new DbBoard
 				{
 					Id = 1,
 					Name = "BoardOne",
@@ -27,39 +27,39 @@ namespace BlazorScrumAPI.Data
 				}
 				);
 
-			modelBuilder.Entity<User>().HasData(
-				new User
+			modelBuilder.Entity<DbUser>().HasData(
+				new DbUser
 				{
 					Id = 1,
 					Username = "Alex Lackovic"
 				},
-				new User
+				new DbUser
 				{
 					Id = 2,
 					Username = "Benjamin Roesdal"
 				}
 				);
 
-			modelBuilder.Entity<State>().HasData(
-				new State
+			modelBuilder.Entity<DbState>().HasData(
+				new DbState
 				{
 					Id = 1,
 					Name = "To Do"
 				},
-				new State
+				new DbState
 				{
 					Id = 2,
 					Name = "In Progress"
 				},
-				new State
+				new DbState
 				{
 					Id = 3,
 					Name = "Done"
 				}
 				);
 
-			modelBuilder.Entity<Models.Task>().HasData(
-				new Models.Task
+			modelBuilder.Entity<Models.DbScrumTask>().HasData(
+				new Models.DbScrumTask
 				{
 					Id = 1,
 					Title = "Do some code",
@@ -70,7 +70,7 @@ namespace BlazorScrumAPI.Data
 					ReporterID = 2
 				},
 
-                new Models.Task
+                new Models.DbScrumTask
                 {
                     Id = 2,
                     Title = "Check some code",
@@ -80,7 +80,7 @@ namespace BlazorScrumAPI.Data
                     AssigneeID = 1,
                     ReporterID = 2
                 },
-                new Models.Task
+                new Models.DbScrumTask
                 {
                     Id = 3,
                     Title = "What now",
@@ -92,13 +92,13 @@ namespace BlazorScrumAPI.Data
                 }
                 );
 
-			modelBuilder.Entity<Models.Task>()
+			modelBuilder.Entity<Models.DbScrumTask>()
 				.HasOne(x => x.Assignee)
 				.WithMany(x => x.AssigneeTasks)
 				.HasForeignKey(x => x.AssigneeID)
 				.OnDelete(DeleteBehavior.ClientSetNull);
 
-			modelBuilder.Entity<Models.Task>()
+			modelBuilder.Entity<Models.DbScrumTask>()
 				.HasOne(x => x.Reporter)
 				.WithMany(x => x.ReporterTasks)
 				.HasForeignKey(x => x.ReporterID)

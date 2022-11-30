@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BlazorScrumAPI.Data;
 using BlazorScrumAPI.Models;
+using BlazorScrumAPI.BusinessModels;
 
 namespace BlazorScrumAPI.Controllers
 {
@@ -23,7 +24,7 @@ namespace BlazorScrumAPI.Controllers
 
 
         [HttpGet("GetTasks")]
-        public async Task<ActionResult<IEnumerable<Models.Task>>> GetTasks()
+        public async Task<ActionResult<IEnumerable<Models.DbScrumTask>>> GetTasks()
         {
             var response = await _context.Tasks.Include(e => e.State).ToListAsync();
             return response;
@@ -31,7 +32,7 @@ namespace BlazorScrumAPI.Controllers
 
 
         [HttpGet("GetTask")]
-        public async Task<ActionResult<Models.Task>> GetTask(int id)
+        public async Task<ActionResult<DbScrumTask>> GetTask(int id)
         {
             var task = await _context.Tasks.FindAsync(id);
 
@@ -44,43 +45,28 @@ namespace BlazorScrumAPI.Controllers
         }
 
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutTask(int id, Models.Task task)
-        {
-            if (id != task.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(task).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TaskExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-
         [HttpPost("CreateTask")]
-        public async Task<ActionResult<Models.Task>> CreateTask(Models.Task task)
+        public async Task<ActionResult<DbScrumTask>> CreateTask(ScrumTask task)
         {
-            _context.Tasks.Add(task);
+            DbScrumTask newTask = new DbScrumTask()
+            {
+                Id = task.Id,
+                Title= task.Title,
+                Description= task.Description,
+                StateID= task.StateID,
+                BoardID= task.BoardID,
+                AssigneeID= task.AssigneeID,
+                ReporterID= task.ReporterID,
+                Assignee = task.Assignee,
+                Reporter = task.Reporter,
+                Board = task.Board,
+                State = task.State
+
+            };
+            _context.Tasks.Add(newTask);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTask", new { id = task.Id }, task);
+            return CreatedAtAction("GetTask", new { id = newTask.Id }, newTask);
         }
 
 

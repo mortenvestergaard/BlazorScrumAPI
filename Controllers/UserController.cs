@@ -23,13 +23,13 @@ namespace BlazorScrumAPI.Controllers
 
 
         [HttpGet("GetUsers")]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<DbUser>>> GetUsers()
         {
             return await _context.Users.ToListAsync();
         }
 
         [HttpGet("GetUser")]
-        public async Task<ActionResult<User>> GetUser(int id)
+        public async Task<ActionResult<DbUser>> GetUser(int id)
         {
             var user = await _context.Users.FindAsync(id);
 
@@ -43,7 +43,7 @@ namespace BlazorScrumAPI.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
+        public async Task<IActionResult> PutUser(int id, DbUser user)
         {
             if (id != user.Id)
             {
@@ -73,7 +73,7 @@ namespace BlazorScrumAPI.Controllers
 
 
         [HttpPost("CreateUser")]
-        public async Task<ActionResult<User>> CreateUser(User user)
+        public async Task<ActionResult<DbUser>> CreateUser(DbUser user)
         {
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
