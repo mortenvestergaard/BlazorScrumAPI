@@ -12,9 +12,9 @@ namespace BlazorScrumAPI.BusinessModels
         public int AssigneeID { get; set; }
         public int ReporterID { get; set; }
 
-        public DbBoard? Board { get; set; }
-        public DbState? State { get; set; }
-        public DbUser? Assignee { get; set; }
-        public DbUser? Reporter { get; set; }
+        public Board? Board { get; set; }
+        public State? State { get; set; }
+        public User? Assignee { get; set; }
+        public User? Reporter { get; set; }
     }
 }

@@ -43,7 +43,7 @@ namespace BlazorScrumAPI.Controllers
         }
 
 
-        [HttpPut("CreateBoard")]
+        [HttpPut]
         public async Task<IActionResult> PutBoard(int id, DbBoard board)
         {
             if (id != board.Id)
@@ -73,7 +73,7 @@ namespace BlazorScrumAPI.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost("CreateBoard")]
         public async Task<ActionResult<DbBoard>> PostBoard(DbBoard board)
         {
             _context.Boards.Add(board);

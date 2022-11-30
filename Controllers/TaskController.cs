@@ -26,7 +26,7 @@ namespace BlazorScrumAPI.Controllers
         [HttpGet("GetTasks")]
         public async Task<ActionResult<IEnumerable<Models.DbScrumTask>>> GetTasks()
         {
-            var response = await _context.Tasks.Include(e => e.State).ToListAsync();
+            var response = await _context.Tasks.Include(e => e.State).Include(x => x.Board).Include(y => y.Assignee).Include(u => u.Reporter).ToListAsync();
             return response;
         }
 
@@ -44,29 +44,33 @@ namespace BlazorScrumAPI.Controllers
             return task;
         }
 
+        [HttpPut("UpdateTask")]
+        public async Task<IActionResult> UpdateTask(ScrumTask task)
+        {
+
+
+            _context.Entry(task).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+
+            }
+
+            return NoContent();
+        }
 
         [HttpPost("CreateTask")]
         public async Task<ActionResult<DbScrumTask>> CreateTask(ScrumTask task)
         {
-            DbScrumTask newTask = new DbScrumTask()
-            {
-                Id = task.Id,
-                Title= task.Title,
-                Description= task.Description,
-                StateID= task.StateID,
-                BoardID= task.BoardID,
-                AssigneeID= task.AssigneeID,
-                ReporterID= task.ReporterID,
-                Assignee = task.Assignee,
-                Reporter = task.Reporter,
-                Board = task.Board,
-                State = task.State
-
-            };
+            DbScrumTask newTask = new DbScrumTask(task);
             _context.Tasks.Add(newTask);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTask", new { id = newTask.Id }, newTask);
+            return CreatedAtAction("GetTask", new { id = task.Id }, task);
         }
 
 

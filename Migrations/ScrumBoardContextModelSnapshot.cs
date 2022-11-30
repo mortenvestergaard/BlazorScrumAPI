@@ -21,7 +21,7 @@ namespace BlazorScrumAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("BlazorScrumAPI.Models.Board", b =>
+            modelBuilder.Entity("BlazorScrumAPI.Models.DbBoard", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -45,41 +45,7 @@ namespace BlazorScrumAPI.Migrations
                         });
                 });
 
-            modelBuilder.Entity("BlazorScrumAPI.Models.State", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("States");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "To Do"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "In Progress"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Done"
-                        });
-                });
-
-            modelBuilder.Entity("BlazorScrumAPI.Models.Task", b =>
+            modelBuilder.Entity("BlazorScrumAPI.Models.DbScrumTask", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -152,7 +118,41 @@ namespace BlazorScrumAPI.Migrations
                         });
                 });
 
-            modelBuilder.Entity("BlazorScrumAPI.Models.User", b =>
+            modelBuilder.Entity("BlazorScrumAPI.Models.DbState", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("States");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "To Do"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "In Progress"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Done"
+                        });
+                });
+
+            modelBuilder.Entity("BlazorScrumAPI.Models.DbUser", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -181,25 +181,25 @@ namespace BlazorScrumAPI.Migrations
                         });
                 });
 
-            modelBuilder.Entity("BlazorScrumAPI.Models.Task", b =>
+            modelBuilder.Entity("BlazorScrumAPI.Models.DbScrumTask", b =>
                 {
-                    b.HasOne("BlazorScrumAPI.Models.User", "Assignee")
+                    b.HasOne("BlazorScrumAPI.Models.DbUser", "Assignee")
                         .WithMany("AssigneeTasks")
                         .HasForeignKey("AssigneeID")
                         .IsRequired();
 
-                    b.HasOne("BlazorScrumAPI.Models.Board", "Board")
+                    b.HasOne("BlazorScrumAPI.Models.DbBoard", "Board")
                         .WithMany("Tasks")
                         .HasForeignKey("BoardID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BlazorScrumAPI.Models.User", "Reporter")
+                    b.HasOne("BlazorScrumAPI.Models.DbUser", "Reporter")
                         .WithMany("ReporterTasks")
                         .HasForeignKey("ReporterID")
                         .IsRequired();
 
-                    b.HasOne("BlazorScrumAPI.Models.State", "State")
+                    b.HasOne("BlazorScrumAPI.Models.DbState", "State")
                         .WithMany("Tasks")
                         .HasForeignKey("StateID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -214,17 +214,17 @@ namespace BlazorScrumAPI.Migrations
                     b.Navigation("State");
                 });
 
-            modelBuilder.Entity("BlazorScrumAPI.Models.Board", b =>
+            modelBuilder.Entity("BlazorScrumAPI.Models.DbBoard", b =>
                 {
                     b.Navigation("Tasks");
                 });
 
-            modelBuilder.Entity("BlazorScrumAPI.Models.State", b =>
+            modelBuilder.Entity("BlazorScrumAPI.Models.DbState", b =>
                 {
                     b.Navigation("Tasks");
                 });
 
-            modelBuilder.Entity("BlazorScrumAPI.Models.User", b =>
+            modelBuilder.Entity("BlazorScrumAPI.Models.DbUser", b =>
                 {
                     b.Navigation("AssigneeTasks");
 

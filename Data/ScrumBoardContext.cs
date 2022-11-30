@@ -12,7 +12,7 @@ namespace BlazorScrumAPI.Data
 		}
 
 		public DbSet<DbBoard> Boards { get; set; }
-		public DbSet<Models.DbScrumTask> Tasks { get; set; }
+		public DbSet<DbScrumTask> Tasks { get; set; }
 		public DbSet<DbUser> Users { get; set; }
 		public DbSet<DbState> States { get; set; }
 
@@ -58,8 +58,8 @@ namespace BlazorScrumAPI.Data
 				}
 				);
 
-			modelBuilder.Entity<Models.DbScrumTask>().HasData(
-				new Models.DbScrumTask
+			modelBuilder.Entity<DbScrumTask>().HasData(
+				new DbScrumTask
 				{
 					Id = 1,
 					Title = "Do some code",
@@ -70,7 +70,7 @@ namespace BlazorScrumAPI.Data
 					ReporterID = 2
 				},
 
-                new Models.DbScrumTask
+                new DbScrumTask
                 {
                     Id = 2,
                     Title = "Check some code",
@@ -80,7 +80,7 @@ namespace BlazorScrumAPI.Data
                     AssigneeID = 1,
                     ReporterID = 2
                 },
-                new Models.DbScrumTask
+                new DbScrumTask
                 {
                     Id = 3,
                     Title = "What now",
@@ -92,13 +92,13 @@ namespace BlazorScrumAPI.Data
                 }
                 );
 
-			modelBuilder.Entity<Models.DbScrumTask>()
+			modelBuilder.Entity<DbScrumTask>()
 				.HasOne(x => x.Assignee)
 				.WithMany(x => x.AssigneeTasks)
 				.HasForeignKey(x => x.AssigneeID)
 				.OnDelete(DeleteBehavior.ClientSetNull);
 
-			modelBuilder.Entity<Models.DbScrumTask>()
+			modelBuilder.Entity<DbScrumTask>()
 				.HasOne(x => x.Reporter)
 				.WithMany(x => x.ReporterTasks)
 				.HasForeignKey(x => x.ReporterID)

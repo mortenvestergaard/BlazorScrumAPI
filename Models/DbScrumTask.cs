@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BlazorScrumAPI.BusinessModels;
+using System.ComponentModel.DataAnnotations;
 
 namespace BlazorScrumAPI.Models
 {
@@ -17,5 +18,20 @@ namespace BlazorScrumAPI.Models
 		public DbState? State { get; set; }
 		public DbUser? Assignee { get; set; }
 		public DbUser? Reporter { get; set; }
+
+		public DbScrumTask()
+		{
+
+		}
+		public DbScrumTask(ScrumTask scrumTask)
+		{
+			Id = scrumTask.Id;
+			Title = scrumTask.Title;
+			Description = scrumTask.Description;
+			BoardID = scrumTask.BoardID;
+			StateID = scrumTask.StateID;
+			AssigneeID = scrumTask.AssigneeID;
+			ReporterID = scrumTask.ReporterID;
+		}
 	}
 }

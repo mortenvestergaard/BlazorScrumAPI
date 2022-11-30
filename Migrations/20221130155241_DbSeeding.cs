@@ -4,7 +4,7 @@
 
 namespace BlazorScrumAPI.Migrations
 {
-    public partial class DbInit : Migration
+    public partial class DbSeeding : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,8 +14,7 @@ namespace BlazorScrumAPI.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TaskID = table.Column<int>(type: "int", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -89,14 +88,43 @@ namespace BlazorScrumAPI.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Users",
-                columns: new[] { "Id", "Username" },
-                values: new object[] { 1, "Alex Lackovic" });
+                table: "Boards",
+                columns: new[] { "Id", "Name" },
+                values: new object[] { 1, "BoardOne" });
+
+            migrationBuilder.InsertData(
+                table: "States",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "To Do" },
+                    { 2, "In Progress" },
+                    { 3, "Done" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "Username" },
-                values: new object[] { 2, "Benjamin Roesdal" });
+                values: new object[,]
+                {
+                    { 1, "Alex Lackovic" },
+                    { 2, "Benjamin Roesdal" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Tasks",
+                columns: new[] { "Id", "AssigneeID", "BoardID", "Description", "ReporterID", "StateID", "Title" },
+                values: new object[] { 1, 1, 1, "Do the thing with the code", 2, 1, "Do some code" });
+
+            migrationBuilder.InsertData(
+                table: "Tasks",
+                columns: new[] { "Id", "AssigneeID", "BoardID", "Description", "ReporterID", "StateID", "Title" },
+                values: new object[] { 2, 1, 1, "Do the other thing with the code", 2, 2, "Check some code" });
+
+            migrationBuilder.InsertData(
+                table: "Tasks",
+                columns: new[] { "Id", "AssigneeID", "BoardID", "Description", "ReporterID", "StateID", "Title" },
+                values: new object[] { 3, 2, 1, "I really dont know", 1, 3, "What now" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tasks_AssigneeID",
