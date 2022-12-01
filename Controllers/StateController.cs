@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using BlazorScrumAPI.Data;
 using BlazorScrumAPI.Models;
 using BlazorScrumAPI.BusinessModels;
+using Microsoft.Build.Framework;
 
 namespace BlazorScrumAPI.Controllers
 {
@@ -60,20 +61,27 @@ namespace BlazorScrumAPI.Controllers
             return CreatedAtAction("GetState", new { id = newState.Id }, newState);
         }
 
-        // DELETE: api/State/5
-        [HttpDelete("DeleteState")]
-        public async Task<IActionResult> DeleteState(int id)
+
+        [HttpPost("DeleteState")]
+        public async Task<IActionResult> DeleteState(State state)
         {
-            var state = await _context.States.FindAsync(id);
+            var dbState = await _context.States.FindAsync(state.Id);
             if (state == null)
             {
                 return NotFound();
             }
 
-            _context.States.Remove(state);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            try
+            {
+                _context.States.Remove(dbState);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                return NoContent();
+                throw;
+            }
+            return Ok();
         }
 
         private bool StateExists(int id)

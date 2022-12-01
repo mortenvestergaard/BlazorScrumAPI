@@ -74,45 +74,45 @@ namespace BlazorScrumAPI.Controllers
             return Ok(data);
         }
 
-		[HttpPut("UpdateTask")]
-		public async Task<IActionResult> UpdateTask(ScrumTask task)
-		{
-			if (task.Id == null || task.Id == 0)
-			{
-				return BadRequest();
-			}
+        [HttpPut("UpdateTask")]
+        public async Task<IActionResult> UpdateTask(ScrumTask task)
+        {
+            if (task.Id == null || task.Id == 0)
+            {
+                return BadRequest();
+            }
 
-			var data = _context.Tasks.Where(s => s.Id == task.Id).First();
+            var data = _context.Tasks.Where(s => s.Id == task.Id).First();
             DbScrumTask updatedTask = new DbScrumTask(task);
-            data.Id= updatedTask.Id;
+            data.Id = updatedTask.Id;
             data.Title = updatedTask.Title;
             data.Description = updatedTask.Description;
             data.AssigneeID = updatedTask.AssigneeID;
             data.ReporterID = updatedTask.ReporterID;
             data.BoardID = updatedTask.BoardID;
             data.StateID = updatedTask.StateID;
-			//_context.Entry(task).State = EntityState.Modified;
+            //_context.Entry(task).State = EntityState.Modified;
 
-			try
-			{
-				await _context.SaveChangesAsync();
-			}
-			catch (DbUpdateConcurrencyException)
-			{
-				if (!TaskExists(task.Id))
-				{
-					return NotFound();
-				}
-				else
-				{
-					throw;
-				}
-			}
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!TaskExists(task.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
 
-			return Ok(data);
-		}
+            return Ok(data);
+        }
 
-		[HttpPost("CreateTask")]
+        [HttpPost("CreateTask")]
         public async Task<ActionResult<DbScrumTask>> CreateTask(ScrumTask task)
         {
             DbScrumTask newTask = new DbScrumTask(task);
@@ -123,19 +123,26 @@ namespace BlazorScrumAPI.Controllers
         }
 
 
-        [HttpDelete("DeleteTask")]
-        public async Task<IActionResult> DeleteTask(int id)
+        [HttpPost("DeleteTask")]
+        public async Task<IActionResult> DeleteTask(ScrumTask task)
         {
-            var task = await _context.Tasks.FindAsync(id);
+            var dbTask = await _context.Tasks.FindAsync(task.Id);
             if (task == null)
             {
                 return NotFound();
             }
 
-            _context.Tasks.Remove(task);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            try
+            {
+                _context.Tasks.Remove(dbTask);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                return NoContent();
+                throw;
+            }
+            return Ok();
         }
 
         private bool TaskExists(int id)
