@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using BlazorScrumAPI.Data;
 using BlazorScrumAPI.Models;
 using BlazorScrumAPI.BusinessModels;
-using System.Net.Mail;
-using System.Net;
+using MimeKit;
+using MailKit.Net.Smtp;
 
 namespace BlazorScrumAPI.Controllers
 {
@@ -44,39 +44,44 @@ namespace BlazorScrumAPI.Controllers
             return user;
         }
 
+        /// <summary>
+        /// Sends an email to the specified email address when a new task is created for the assignee
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         [HttpPost("SendEmail")]
         public async Task<ActionResult> SendEmail(User user)
         {
-            var client = new SmtpClient();
 
             try
             {
-                client.Port = 81;
-                client.Host = "";
+                var message = new MimeMessage();
+                message.From.Add(new MailboxAddress(user.Username, "mivest@hotmail.com"));
+                message.To.Add(new MailboxAddress("Morten Vestergaard", "mbvestergaard@hotmail.com"));
+                message.Subject = "New task created";
+                message.Body = new TextPart()
+                {
+                    Text = "New task created on BoardOne for user: " + user
+                };
 
-                NetworkCredential credentials = new NetworkCredential();
-                credentials.Password = "";
-                credentials.UserName = "";
-                client.Credentials = credentials;
+                using (var client = new SmtpClient())
+                {
+                    client.Connect("smtp.office365.com", 587, false);
 
-                MailAddress sender = new MailAddress(user.Email, user.Username);
+                    //Hidden for privacy reasons
+                    client.Authenticate("EMAIL", "PASSWORD");
 
-                MailAddress receiver = new MailAddress("mort286f@zbc.dk", "Morten2");
-
-                MailMessage msg = new MailMessage(sender, receiver);
-                msg.Subject = "BlazorScrumApp New Task";
-                msg.Body = "A task was created in the BlazorScrumApp";
-
-                
-                client.Send(msg);
-                return Ok();
+                    client.Send(message);
+                    client.Disconnect(true);
+                }
+                    return Ok();
             }
             catch (Exception)
             {
                 return BadRequest();
                 throw;
             }
-            finally { client.Dispose(); }
+            finally { }
 
         }
 
