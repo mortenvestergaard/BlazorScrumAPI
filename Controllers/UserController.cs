@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BlazorScrumAPI.Data;
 using BlazorScrumAPI.Models;
+using BlazorScrumAPI.BusinessModels;
+using System.Net.Mail;
+using System.Net;
 
 namespace BlazorScrumAPI.Controllers
 {
@@ -39,6 +42,42 @@ namespace BlazorScrumAPI.Controllers
             }
 
             return user;
+        }
+
+        [HttpPost("SendEmail")]
+        public async Task<ActionResult> SendEmail(User user)
+        {
+            var client = new SmtpClient();
+
+            try
+            {
+                client.Port = 81;
+                client.Host = "";
+
+                NetworkCredential credentials = new NetworkCredential();
+                credentials.Password = "";
+                credentials.UserName = "";
+                client.Credentials = credentials;
+
+                MailAddress sender = new MailAddress(user.Email, user.Username);
+
+                MailAddress receiver = new MailAddress("mort286f@zbc.dk", "Morten2");
+
+                MailMessage msg = new MailMessage(sender, receiver);
+                msg.Subject = "BlazorScrumApp New Task";
+                msg.Body = "A task was created in the BlazorScrumApp";
+
+                
+                client.Send(msg);
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+                throw;
+            }
+            finally { client.Dispose(); }
+
         }
 
 

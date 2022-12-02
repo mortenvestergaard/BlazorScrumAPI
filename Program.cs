@@ -25,7 +25,7 @@ app.MigrateDatabase();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-app.UseCors(options => options.WithOrigins().AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
+app.UseCors(options => options.AllowAnyOrigin().AllowAnyHeader());
 app.MapControllers();
 
 app.Run();

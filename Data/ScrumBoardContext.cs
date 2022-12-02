@@ -31,12 +31,14 @@ namespace BlazorScrumAPI.Data
 				new DbUser
 				{
 					Id = 1,
-					Username = "Alex Lackovic"
+					Username = "Morten Vestergaard",
+					Email = "mivest@hotmail.com"
 				},
 				new DbUser
 				{
 					Id = 2,
-					Username = "Benjamin Roesdal"
+					Username = "Benjamin Roesdal",
+					Email = "mivest@hotmail.com"
 				}
 				);
 
