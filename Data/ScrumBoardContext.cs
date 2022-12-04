@@ -16,6 +16,7 @@ namespace BlazorScrumAPI.Data
 		public DbSet<DbUser> Users { get; set; }
 		public DbSet<DbState> States { get; set; }
 
+		//Data seeding
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<DbBoard>().HasData(

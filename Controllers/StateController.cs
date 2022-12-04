@@ -83,10 +83,5 @@ namespace BlazorScrumAPI.Controllers
             }
             return Ok();
         }
-
-        private bool StateExists(int id)
-        {
-            return _context.States.Any(e => e.Id == id);
-        }
     }
 }

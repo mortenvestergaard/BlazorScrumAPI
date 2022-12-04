@@ -23,6 +23,8 @@ namespace BlazorScrumAPI.Models
 		{
 
 		}
+
+		//Constructor to map the Task business model to the database model
 		public DbScrumTask(ScrumTask scrumTask)
 		{
 			Id = scrumTask.Id;

@@ -48,7 +48,6 @@ namespace BlazorScrumAPI.Controllers
         /// Sends an email to the specified email address when a new task is created for the assignee
         /// </summary>
         /// <param name="user"></param>
-        /// <returns></returns>
         [HttpPost("SendEmail")]
         public async Task<ActionResult> SendEmail(User user)
         {
@@ -85,37 +84,6 @@ namespace BlazorScrumAPI.Controllers
 
         }
 
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, DbUser user)
-        {
-            if (id != user.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(user).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-
         [HttpPost("CreateUser")]
         public async Task<ActionResult<DbUser>> CreateUser(DbUser user)
         {
@@ -123,11 +91,6 @@ namespace BlazorScrumAPI.Controllers
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetUser", new { id = user.Id }, user);
-        }
-
-        private bool UserExists(int id)
-        {
-            return _context.Users.Any(e => e.Id == id);
         }
     }
 }
